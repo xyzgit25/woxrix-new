@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stinge (aka Woxrix)</title>
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        function copyBrawlstarsId() {
+            const btn = event.currentTarget;
+            navigator.clipboard.writeText("#PRQ8L8G99").then(() => {
+                btn.querySelector('.btn-text').textContent = 'Kopiert!';
+                setTimeout(() => {
+                    btn.querySelector('.btn-text').textContent = '#PRQ8L8G99';
+                }, 1500);
+            });
+        }
+    </script>
+</head>
+<body>
+
+    <main class="container">
+        <div class="profile">
+            <img src="https://i.ibb.co/zCxMt6J/a536a0dbdf6bad6160c800217589cdee-tplv-tiktokx-cropcenter-1080-1080.jpg" alt="Profilbild" class="avatar">
+            <h1>Stinge</h1>
+            <span class="tag">aka Woxrix</span>
+            <p class="bio">Folg mir auf TikTok &mdash; Brawlstars 75k+ Spieler</p>
+        </div>
+
+        <div class="links">
+            <a href="https://www.tiktok.com/@woxrixbs" target="_blank" rel="noopener" class="link-btn">
+                <i class="fab fa-tiktok"></i>
+                <span class="btn-text">TikTok</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+            <button onclick="copyBrawlstarsId()" class="link-btn">
+                <i class="fas fa-gamepad"></i>
+                <span class="btn-text">#PRQ8L8G99</span>
+                <i class="fas fa-copy"></i>
+            </button>
+        </div>
+    </main>
+
+</body>
+</html>
