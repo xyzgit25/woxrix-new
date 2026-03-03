@@ -34,6 +34,7 @@
                 <div class="status-dot" title="Online"></div>
                 <img src="https://i.ibb.co/zCxMt6J/a536a0dbdf6bad6160c800217589cdee-tplv-tiktokx-cropcenter-1080-1080.jpg" alt="Stinge" class="avatar">
             </div>
+            
             <h1 class="stagger" style="animation-delay: 0.3s;">Stinge</h1>
             <p class="tag stagger" style="animation-delay: 0.4s;">aka Woxrix</p>
             
@@ -63,7 +64,7 @@
             </button>
         </nav>
 
-        <footer class="stagger" style="animation-delay: 1s; text-align: center; margin-top: 40px; font-size: 0.7rem; color: var(--text-dim); letter-spacing: 2px; text-transform: uppercase;">
+        <footer class="stagger footer-text" style="animation-delay: 1s;">
             woxrix.aura
         </footer>
     </main>
@@ -76,38 +77,44 @@
         const shareBtn = document.getElementById('share-page-btn');
         const trophyElement = document.getElementById('trophy-count');
         
-        const playerID = "PRQ8L8G99"; // Ohne Raute für API
+        const playerID = "#PRQ8L8G99";
 
-        // --- Feature: Dynamic Trophy Counter (Mockup/API Integration) ---
+        // --- Live Trophäen von deiner Vercel API laden ---
         async function fetchTrophies() {
             try {
-                // Hinweis: Echte Brawl Stars API benötigt Backend (CORS). 
-                // Dies ist ein Platzhalter, der zeigt, wie du die Daten einbindest.
-                // Für echte Daten nutze z.B. einen Worker oder Proxy.
-                setTimeout(() => {
-                    trophyElement.textContent = "75.432"; // Beispielwert
+                const response = await fetch('/api/get-stats');
+                const data = await response.json();
+
+                if (data.trophies) {
+                    const formatted = new Intl.NumberFormat('de-DE').format(data.trophies);
+                    trophyElement.textContent = formatted;
                     trophyElement.parentElement.classList.add('loaded');
-                }, 1500);
+                } else {
+                    throw new Error("Daten unvollständig");
+                }
             } catch (error) {
-                trophyElement.textContent = "75k+";
+                console.error("API Fehler:", error);
+                trophyElement.textContent = "75k+"; // Fallback
+                trophyElement.parentElement.classList.add('loaded');
             }
         }
         fetchTrophies();
 
-        // --- Feature: Share Page ---
+        // --- Seite teilen Funktion ---
         shareBtn.addEventListener('click', () => {
             if (navigator.share) {
                 navigator.share({
                     title: 'Stinge | Aura',
+                    text: 'Check mein Brawl Stars Profil aus!',
                     url: window.location.href
                 });
             } else {
                 navigator.clipboard.writeText(window.location.href);
-                alert("Link kopiert!");
+                alert("Link zur Seite kopiert!");
             }
         });
 
-        // --- Feature: Verbessertes 3D Tilt ---
+        // --- 3D Tilt Effekt (Desktop) ---
         const handleTilt = (e) => {
             if (window.innerWidth < 768) return; 
             const { clientX, clientY } = e;
@@ -115,23 +122,43 @@
             const rotationY = ((clientX - innerWidth / 2) / innerWidth) * 10;
             const rotationX = ((clientY - innerHeight / 2) / innerHeight) * -10;
             card.style.transform = `perspective(1000px) rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+            
+            document.querySelectorAll('.blob').forEach((blob, i) => {
+                const speed = (i + 1) * 15;
+                blob.style.transform = `translate(${(clientX - innerWidth / 2) / speed}px, ${(clientY - innerHeight / 2) / speed}px)`;
+            });
         };
 
         const resetTilt = () => {
             card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+            document.querySelectorAll('.blob').forEach(blob => blob.style.transform = `translate(0, 0)`);
         };
 
         document.addEventListener('mousemove', handleTilt);
         document.addEventListener('mouseleave', resetTilt);
 
-        // --- Feature: Copy ID ---
+        // --- Button Spotlight Effekt ---
+        document.querySelectorAll('.link-btn').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                btn.style.setProperty('--x', `${e.clientX - rect.left}px`);
+                btn.style.setProperty('--y', `${e.clientY - rect.top}px`);
+            });
+        });
+
+        // --- ID Kopieren Funktion ---
         copyBtn.addEventListener('click', () => {
-            navigator.clipboard.writeText("#" + playerID).then(() => {
+            navigator.clipboard.writeText(playerID).then(() => {
                 idText.textContent = "ID Kopiert!";
                 copyIcon.className = "fas fa-check";
+                copyIcon.style.color = "var(--accent-green)";
+                copyIcon.style.opacity = "1";
+                
                 setTimeout(() => {
-                    idText.textContent = "#" + playerID;
+                    idText.textContent = playerID;
                     copyIcon.className = "fas fa-copy";
+                    copyIcon.style.color = "white";
+                    copyIcon.style.opacity = "0.3";
                 }, 2000);
             });
         });
