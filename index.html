@@ -3,105 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stinge (aka Woxrix)</title>
-    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <title>Stinge | Aura</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- Liquid blobs -->
     <div class="liquid-bg" aria-hidden="true">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
     </div>
-
-    <!-- Noise -->
     <div class="noise" aria-hidden="true"></div>
 
-    <main class="container" id="card">
-
-        <div class="profile">
-            <div class="avatar-wrap" style="--i:0">
-                <div class="avatar-glow"></div>
-                <img src="https://i.ibb.co/zCxMt6J/a536a0dbdf6bad6160c800217589cdee-tplv-tiktokx-cropcenter-1080-1080.jpg" alt="Profilbild" class="avatar">
-                <span class="status-dot" id="status-dot" title="Offline"></span>
+    <main class="container" id="tilt-card">
+        
+        <header class="profile">
+            <div class="avatar-wrap">
+                <div class="status-dot" title="Online"></div>
+                <img src="https://i.ibb.co/zCxMt6J/a536a0dbdf6bad6160c800217589cdee-tplv-tiktokx-cropcenter-1080-1080.jpg" alt="Stinge" class="avatar">
             </div>
-            <h1 style="--i:1">Stinge</h1>
-            <span class="tag" style="--i:2">aka Woxrix</span>
-            <p class="bio" style="--i:3">Folg mir auf TikTok &mdash; Brawlstars 75k+ Spieler</p>
-        </div>
+            <h1 class="stagger" style="animation-delay: 0.3s;">Stinge</h1>
+            <p class="tag stagger" style="animation-delay: 0.4s;">aka Woxrix</p>
+            <p class="bio stagger" style="animation-delay: 0.5s;">
+                Folg mir auf TikTok — Brawl Stars Enthusiast mit 75k+ Trophäen.
+            </p>
+        </header>
 
-        <div class="links">
-            <a href="https://www.tiktok.com/@woxrixbs" target="_blank" rel="noopener" class="link-btn glass" style="--i:4">
-                <div class="btn-icon">
-                    <i class="fab fa-tiktok"></i>
-                </div>
+        <nav class="links">
+            <a href="https://www.tiktok.com/@woxrixbs" target="_blank" rel="noopener" class="link-btn stagger" style="animation-delay: 0.6s;">
+                <div class="btn-icon"><i class="fab fa-tiktok"></i></div>
                 <span class="btn-text">TikTok</span>
-                <i class="fas fa-arrow-right btn-arrow"></i>
+                <i class="fas fa-chevron-right btn-arrow"></i>
                 <div class="btn-spotlight"></div>
             </a>
-            <button onclick="copyId(this)" class="link-btn glass" style="--i:5">
-                <div class="btn-icon">
-                    <i class="fas fa-gamepad"></i>
-                </div>
-                <span class="btn-text">#PRQ8L8G99</span>
-                <i class="fas fa-copy btn-arrow"></i>
+
+            <button type="button" class="link-btn stagger" id="copy-btn" style="animation-delay: 0.7s;">
+                <div class="btn-icon"><i class="fas fa-gamepad"></i></div>
+                <span class="btn-text" id="id-text">#PRQ8L8G99</span>
+                <i class="fas fa-copy btn-arrow" id="copy-icon"></i>
                 <div class="btn-spotlight"></div>
             </button>
-        </div>
+        </nav>
 
-        <p class="footer-note" style="--i:6">woxrix.aura</p>
+        <footer class="stagger" style="animation-delay: 0.9s; text-align: center; margin-top: 40px; font-size: 0.7rem; color: var(--text-dim); letter-spacing: 2px; text-transform: uppercase;">
+            woxrix.aura
+        </footer>
     </main>
 
     <script>
-        // Copy ID
-        function copyId(btn) {
-            navigator.clipboard.writeText("#PRQ8L8G99").then(() => {
-                btn.classList.add('copied');
-                btn.querySelector('.btn-text').textContent = 'Kopiert!';
-                btn.querySelector('.btn-arrow').className = 'fas fa-check btn-arrow';
-                setTimeout(() => {
-                    btn.classList.remove('copied');
-                    btn.querySelector('.btn-text').textContent = '#PRQ8L8G99';
-                    btn.querySelector('.btn-arrow').className = 'fas fa-copy btn-arrow';
-                }, 1800);
-            });
-        }
+        const card = document.getElementById('tilt-card');
+        const copyBtn = document.getElementById('copy-btn');
+        const idText = document.getElementById('id-text');
+        const copyIcon = document.getElementById('copy-icon');
+        const playerID = "#PRQ8L8G99";
 
-        // 3D tilt + blob parallax
-        const card = document.getElementById('card');
-        document.addEventListener('mousemove', (e) => {
-            const cx = window.innerWidth / 2;
-            const cy = window.innerHeight / 2;
-            const dx = (e.clientX - cx) / cx;
-            const dy = (e.clientY - cy) / cy;
-
-            // Tilt card
-            card.style.transform =
-                `perspective(900px) rotateY(${dx * 3}deg) rotateX(${-dy * 3}deg)`;
-
-            // Parallax blobs
+        // --- Feature: Verbessertes 3D Tilt (Nur Desktop) ---
+        const handleTilt = (e) => {
+            if (window.innerWidth < 768) return; 
+            
+            const { clientX, clientY } = e;
+            const { innerWidth, innerHeight } = window;
+            
+            const rotationY = ((clientX - innerWidth / 2) / innerWidth) * 10;
+            const rotationX = ((clientY - innerHeight / 2) / innerHeight) * -10;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+            
+            // Parallax Blobs
             document.querySelectorAll('.blob').forEach((blob, i) => {
-                const s = (i + 1) * 12;
-                blob.style.transform = `translate(${dx * s}px, ${dy * s}px)`;
+                const speed = (i + 1) * 15;
+                const x = (clientX - innerWidth / 2) / speed;
+                const y = (clientY - innerHeight / 2) / speed;
+                blob.style.transform = `translate(${x}px, ${y}px)`;
             });
-        });
+        };
 
-        document.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(900px) rotateY(0deg) rotateX(0deg)';
-        });
+        const resetTilt = () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+            document.querySelectorAll('.blob').forEach(blob => blob.style.transform = `translate(0, 0)`);
+        };
 
-        // Button spotlight follows cursor
+        document.addEventListener('mousemove', handleTilt);
+        document.addEventListener('mouseleave', resetTilt);
+
+        // --- Feature: Button Spotlight ---
         document.querySelectorAll('.link-btn').forEach(btn => {
             btn.addEventListener('mousemove', (e) => {
                 const rect = btn.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                btn.style.setProperty('--mx', x + 'px');
-                btn.style.setProperty('--my', y + 'px');
+                btn.style.setProperty('--x', `${e.clientX - rect.left}px`);
+                btn.style.setProperty('--y', `${e.clientY - rect.top}px`);
+            });
+        });
+
+        // --- Feature: Copy ID mit Feedback ---
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(playerID).then(() => {
+                idText.textContent = "ID Kopiert!";
+                copyIcon.className = "fas fa-check";
+                copyIcon.style.color = "var(--accent-green)";
+                copyIcon.style.opacity = "1";
+                
+                setTimeout(() => {
+                    idText.textContent = playerID;
+                    copyIcon.className = "fas fa-copy";
+                    copyIcon.style.color = "white";
+                    copyIcon.style.opacity = "0.3";
+                }, 2000);
             });
         });
     </script>
