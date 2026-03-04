@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stinge | Aura</title>
+    <title>Stinge | Aura Pro</title>
     
     <meta property="og:title" content="Stinge | Aura">
     <meta property="og:description" content="75k+ Trophies Brawl Stars Pro & Content Creator">
     <meta property="og:image" content="https://i.ibb.co/zCxMt6J/a536a0dbdf6bad6160c800217589cdee-tplv-tiktokx-cropcenter-1080-1080.jpg">
-    <meta property="og:url" content="https://woxrix.aura">
     <meta name="theme-color" content="#3dd68c">
 
     <link rel="stylesheet" href="styles.css">
@@ -28,7 +27,6 @@
     </button>
 
     <main class="container" id="tilt-card">
-        
         <header class="profile">
             <div class="avatar-wrap">
                 <div class="status-dot" title="Online"></div>
@@ -41,7 +39,7 @@
             <div class="stats-grid stagger" style="animation-delay: 0.3s;">
                 <div class="stat-item">
                     <i class="fas fa-trophy"></i>
-                    <span class="stat-value">75k+</span>
+                    <span class="stat-value" id="trophy-counter" data-target="75000">0</span>
                     <span class="stat-label">Trophäen</span>
                 </div>
                 <div class="stat-divider"></div>
@@ -87,7 +85,35 @@
         const idText = document.getElementById('id-text');
         const copyIcon = document.getElementById('copy-icon');
         const shareBtn = document.getElementById('share-page-btn');
+        const trophyElement = document.getElementById('trophy-counter');
         const playerID = "#PRQ8L8G99";
+
+        // --- Trophäen Counter Animation ---
+        function animateCounter() {
+            const target = parseInt(trophyElement.getAttribute('data-target'));
+            const duration = 2000; // 2 Sekunden
+            const start = 0;
+            const startTime = performance.now();
+
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Easing Funktion für sanftes Bremsen am Ende
+                const easeOutQuad = t => t * (2 - t);
+                const currentNumber = Math.floor(easeOutQuad(progress) * target);
+                
+                trophyElement.textContent = currentNumber.toLocaleString() + "+";
+
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            requestAnimationFrame(update);
+        }
+
+        // Start der Animation nach dem Laden
+        window.addEventListener('DOMContentLoaded', animateCounter);
 
         // --- Seite teilen ---
         shareBtn.addEventListener('click', () => {
