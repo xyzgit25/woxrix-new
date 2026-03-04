@@ -35,36 +35,48 @@
                 <img src="https://i.ibb.co/zCxMt6J/a536a0dbdf6bad6160c800217589cdee-tplv-tiktokx-cropcenter-1080-1080.jpg" alt="Stinge" class="avatar">
             </div>
             
-            <h1 class="stagger" style="animation-delay: 0.3s;">Stinge</h1>
-            <p class="tag stagger" style="animation-delay: 0.4s;">aka Woxrix</p>
+            <h1 class="stagger" style="animation-delay: 0.1s;">Stinge</h1>
+            <p class="tag stagger" style="animation-delay: 0.2s;">aka Woxrix</p>
             
-            <div class="stats-badge stagger" style="animation-delay: 0.5s;">
-                <i class="fas fa-trophy"></i>
-                <span id="trophy-count">Lade...</span> Trophäen
+            <div class="stats-grid stagger" style="animation-delay: 0.3s;">
+                <div class="stat-item">
+                    <i class="fas fa-trophy"></i>
+                    <span class="stat-value">75k+</span>
+                    <span class="stat-label">Trophäen</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <i class="fas fa-fire"></i>
+                    <span class="stat-value">Pro</span>
+                    <span class="stat-label">Creator</span>
+                </div>
             </div>
 
-            <p class="bio stagger" style="animation-delay: 0.6s;">
-                Folg mir auf TikTok — Brawl Stars Enthusiast.
+            <p class="bio stagger" style="animation-delay: 0.4s;">
+                Brawl Stars Enthusiast & Content Creator. <br>Täglich neue Clips auf TikTok.
             </p>
         </header>
 
         <nav class="links">
-            <a href="https://www.tiktok.com/@woxrixbs" target="_blank" rel="noopener" class="link-btn stagger" style="animation-delay: 0.7s;">
+            <a href="https://www.tiktok.com/@woxrixbs" target="_blank" rel="noopener" class="link-btn stagger" style="animation-delay: 0.5s;">
                 <div class="btn-icon"><i class="fab fa-tiktok"></i></div>
                 <span class="btn-text">TikTok</span>
                 <i class="fas fa-chevron-right btn-arrow"></i>
                 <div class="btn-spotlight"></div>
             </a>
 
-            <button type="button" class="link-btn stagger" id="copy-btn" style="animation-delay: 0.8s;">
+            <button type="button" class="link-btn stagger" id="copy-btn" style="animation-delay: 0.6s;">
                 <div class="btn-icon"><i class="fas fa-gamepad"></i></div>
-                <span class="btn-text" id="id-text">#PRQ8L8G99</span>
+                <div class="btn-content">
+                    <span class="btn-label">Player ID</span>
+                    <span class="btn-text" id="id-text">#PRQ8L8G99</span>
+                </div>
                 <i class="fas fa-copy btn-arrow" id="copy-icon"></i>
                 <div class="btn-spotlight"></div>
             </button>
         </nav>
 
-        <footer class="stagger footer-text" style="animation-delay: 1s;">
+        <footer class="stagger footer-text" style="animation-delay: 0.8s;">
             woxrix.aura
         </footer>
     </main>
@@ -75,70 +87,29 @@
         const idText = document.getElementById('id-text');
         const copyIcon = document.getElementById('copy-icon');
         const shareBtn = document.getElementById('share-page-btn');
-        const trophyElement = document.getElementById('trophy-count');
-
-        
         const playerID = "#PRQ8L8G99";
 
-        // --- Live Trophäen von deiner Vercel API laden ---
-        async function fetchTrophies() {
-            try {
-                const response = await fetch('/api/get-stats');
-                const data = await response.json();
-
-                if (data.trophies) {
-                    const formatted = new Intl.NumberFormat('de-DE').format(data.trophies);
-                    trophyElement.textContent = formatted;
-                    trophyElement.parentElement.classList.add('loaded');
-                } else {
-                    throw new Error("Daten unvollständig");
-                }
-            } catch (error) {
-                console.error("API Fehler:", error);
-                trophyElement.textContent = "75k+"; // Fallback
-                trophyElement.parentElement.classList.add('loaded');
-            }
-        }
-        fetchTrophies();
-
-        // --- Seite teilen Funktion ---
+        // --- Seite teilen ---
         shareBtn.addEventListener('click', () => {
             if (navigator.share) {
-                navigator.share({
-                    title: 'Stinge | Aura',
-                    text: 'Check mein Brawl Stars Profil aus!',
-                    url: window.location.href
-                });
+                navigator.share({ title: 'Stinge | Aura', url: window.location.href });
             } else {
                 navigator.clipboard.writeText(window.location.href);
-                alert("Link zur Seite kopiert!");
+                alert("Link kopiert!");
             }
         });
 
-        // --- 3D Tilt Effekt (Desktop) ---
-        const handleTilt = (e) => {
-            if (window.innerWidth < 768) return; 
+        // --- 3D Tilt (Desktop) ---
+        document.addEventListener('mousemove', (e) => {
+            if (window.innerWidth < 768) return;
             const { clientX, clientY } = e;
             const { innerWidth, innerHeight } = window;
-            const rotationY = ((clientX - innerWidth / 2) / innerWidth) * 10;
-            const rotationX = ((clientY - innerHeight / 2) / innerHeight) * -10;
-            card.style.transform = `perspective(1000px) rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
-            
-            document.querySelectorAll('.blob').forEach((blob, i) => {
-                const speed = (i + 1) * 15;
-                blob.style.transform = `translate(${(clientX - innerWidth / 2) / speed}px, ${(clientY - innerHeight / 2) / speed}px)`;
-            });
-        };
+            const x = ((clientX - innerWidth / 2) / innerWidth) * 15;
+            const y = ((clientY - innerHeight / 2) / innerHeight) * -15;
+            card.style.transform = `perspective(1000px) rotateX(${y}deg) rotateY(${x}deg)`;
+        });
 
-        const resetTilt = () => {
-            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
-            document.querySelectorAll('.blob').forEach(blob => blob.style.transform = `translate(0, 0)`);
-        };
-
-        document.addEventListener('mousemove', handleTilt);
-        document.addEventListener('mouseleave', resetTilt);
-
-        // --- Button Spotlight Effekt ---
+        // --- Button Glow & Copy ---
         document.querySelectorAll('.link-btn').forEach(btn => {
             btn.addEventListener('mousemove', (e) => {
                 const rect = btn.getBoundingClientRect();
@@ -147,19 +118,17 @@
             });
         });
 
-        // --- ID Kopieren Funktion ---
         copyBtn.addEventListener('click', () => {
             navigator.clipboard.writeText(playerID).then(() => {
-                idText.textContent = "ID Kopiert!";
+                const originalText = idText.textContent;
+                idText.textContent = "Kopiert!";
                 copyIcon.className = "fas fa-check";
-                copyIcon.style.color = "var(--accent-green)";
-                copyIcon.style.opacity = "1";
+                copyBtn.classList.add('copy-success');
                 
                 setTimeout(() => {
-                    idText.textContent = playerID;
+                    idText.textContent = originalText;
                     copyIcon.className = "fas fa-copy";
-                    copyIcon.style.color = "white";
-                    copyIcon.style.opacity = "0.3";
+                    copyBtn.classList.remove('copy-success');
                 }, 2000);
             });
         });
