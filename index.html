@@ -22,7 +22,10 @@
         <div class="blob blob-3"></div>
     </div>
     <div class="noise" aria-hidden="true"></div>
-
+  <!-- Dynamic Island Toast -->
+  <div id="dynamic-toast" class="dynamic-toast">
+    <i class="fas fa-check-circle"></i> <span>Player ID kopiert!</span>
+  </div>
     <button id="share-page-btn" class="share-fab" title="Seite teilen">
         <i class="fas fa-share-nodes"></i>
     </button>
@@ -40,8 +43,8 @@
             <div class="stats-grid">
                 <div class="stat-item">
                     <i class="fas fa-trophy"></i>
-                    <span class="stat-value" id="trophy-counter">Lädt...</span>
-                    <span class="stat-label">Trophäen</span>
+                    <span class="stat-value" id="trophy-counter">L�dt...</span>
+                    <span class="stat-label">Troph�en</span>
                 </div>
                 <div class="stat-divider"></div>
                 <div class="stat-item">
@@ -52,7 +55,7 @@
             </div>
 
             <p class="bio">
-                Brawl Stars Enthusiast & Content Creator. <br>Täglich neue Clips auf TikTok.
+                Brawl Stars Enthusiast & Content Creator. <br>T�glich neue Clips auf TikTok.
             </p>
         </header>
 
@@ -88,7 +91,7 @@ const copyIcon = document.getElementById("copy-icon");
 const shareBtn = document.getElementById("share-page-btn");
 const playerID = "#PRQ8L8G99";
 
-// 🔥 LIVE TROPHÄEN LADEN
+// ?? LIVE TROPH�EN LADEN
 async function loadTrophies() {
     try {
         const response = await fetch("/api/player");
@@ -109,7 +112,7 @@ async function loadTrophies() {
     }
 }
 
-// Sanfte Animation der Trophäen
+// Sanfte Animation der Troph�en
 function animateCounter(target) {
     const duration = 2000;
     const startTime = performance.now();
@@ -126,26 +129,33 @@ function animateCounter(target) {
     requestAnimationFrame(update);
 }
 
-// Seite geladen → Trophäen laden
+// Seite geladen ? Troph�en laden
 window.addEventListener("DOMContentLoaded", loadTrophies);
 
-// 🔄 Automatisch alle 30 Sekunden aktualisieren
+// ?? Automatisch alle 30 Sekunden aktualisieren
 setInterval(loadTrophies, 30000);
 
-// 📋 Copy Player ID
+// ?? Copy Player ID
 copyBtn.addEventListener("click", () => {
     navigator.clipboard.writeText(playerID).then(() => {
         idText.textContent = "Kopiert!";
         copyIcon.className = "fas fa-check";
 
+        // Dynamic Island Toast einblenden
+        const toast = document.getElementById("dynamic-toast");
+        toast.classList.add("show");
+
         setTimeout(() => {
             idText.textContent = playerID;
             copyIcon.className = "fas fa-copy";
-        }, 2000);
+            
+            // Toast wieder ausblenden
+            toast.classList.remove("show");
+        }, 2500);
     });
 });
 
-// 🔗 Share
+// ?? Share
 shareBtn.addEventListener("click", () => {
     if (navigator.share) {
         navigator.share({
