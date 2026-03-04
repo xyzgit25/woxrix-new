@@ -1,155 +1,184 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stinge | Aura Pro</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Stinge | Aura Pro</title>
 
-<meta property="og:title" content="Stinge | Aura">
-<meta property="og:description" content="Brawl Stars Pro & Content Creator">
-<meta property="og:image" content="https://i.ibb.co/zCxMt6J/a536a0dbdf6bad6160c800217589cdee-tplv-tiktokx-cropcenter-1080-1080.jpg">
-<meta name="theme-color" content="#3dd68c">
+    <meta property="og:title" content="Stinge | Aura" />
+    <meta property="og:description" content="Brawl Stars Pro & Content Creator" />
+    <meta property="og:image" content="https://i.ibb.co/zCxMt6J/a536a0dbdf6bad6160c800217589cdee-tplv-tiktokx-cropcenter-1080-1080.jpg" />
+    <meta name="theme-color" content="#3dd68c" />
 
-<link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 </head>
 <body>
-
-<div class="liquid-bg" aria-hidden="true">
+  <div class="liquid-bg" aria-hidden="true">
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
     <div class="blob blob-3"></div>
-</div>
-<div class="noise" aria-hidden="true"></div>
+  </div>
+  <div class="noise" aria-hidden="true"></div>
 
-<button id="share-page-btn" class="share-fab" title="Seite teilen">
+  <button id="share-page-btn" class="share-fab" title="Seite teilen">
     <i class="fas fa-share-nodes"></i>
-</button>
+  </button>
 
-<main class="container" id="tilt-card">
+  <main class="container" id="tilt-card">
     <header class="profile">
-        <div class="avatar-wrap">
-            <div class="status-dot" title="Online"></div>
-            <img src="https://i.ibb.co/zCxMt6J/a536a0dbdf6bad6160c800217589cdee-tplv-tiktokx-cropcenter-1080-1080.jpg" alt="Stinge" class="avatar">
-        </div>
-        
-        <h1>Stinge</h1>
-        <p class="tag">aka Woxrix</p>
-        
-        <div class="stats-grid">
-            <div class="stat-item">
-                <i class="fas fa-trophy"></i>
-                <span class="stat-value" id="trophy-counter">Lädt...</span>
-                <span class="stat-label">Trophäen</span>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-                <i class="fas fa-fire"></i>
-                <span class="stat-value">Pro</span>
-                <span class="stat-label">Creator</span>
-            </div>
-        </div>
+      <div class="avatar-wrap">
+        <div class="status-dot" title="Online"></div>
+        <img
+          src="https://i.ibb.co/zCxMt6J/a536a0dbdf6bad6160c800217589cdee-tplv-tiktokx-cropcenter-1080-1080.jpg"
+          alt="Stinge"
+          class="avatar"
+        />
+      </div>
 
-        <p class="bio">
-            Brawl Stars Enthusiast & Content Creator. <br>Täglich neue Clips auf TikTok.
-        </p>
+      <h1>Stinge</h1>
+      <p class="tag">aka Woxrix</p>
+
+      <div class="stats-grid">
+        <div class="stat-item">
+          <i class="fas fa-trophy"></i>
+          <span class="stat-value" id="trophy-counter">Lädt...</span>
+          <span class="stat-label">Trophäen</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <i class="fas fa-fire"></i>
+          <span class="stat-value">Pro</span>
+          <span class="stat-label">Creator</span>
+        </div>
+      </div>
+
+      <p class="bio">
+        Brawl Stars Enthusiast & Content Creator. <br />Täglich neue Clips auf
+        TikTok.
+      </p>
     </header>
 
     <nav class="links">
-        <a href="https://www.tiktok.com/@woxrixbs" target="_blank" class="link-btn">
-            <div class="btn-icon"><i class="fab fa-tiktok"></i></div>
-            <span class="btn-text">TikTok</span>
-            <i class="fas fa-chevron-right btn-arrow"></i>
-        </a>
+      <a
+        href="https://www.tiktok.com/@woxrixbs"
+        target="_blank"
+        class="link-btn"
+        rel="noopener"
+      >
+        <div class="btn-icon"><i class="fab fa-tiktok"></i></div>
+        <span class="btn-text">TikTok</span>
+        <i class="fas fa-chevron-right btn-arrow"></i>
+      </a>
 
-        <button type="button" class="link-btn" id="copy-btn">
-            <div class="btn-icon"><i class="fas fa-gamepad"></i></div>
-            <div class="btn-content">
-                <span class="btn-label">Player ID</span>
-                <span class="btn-text" id="id-text">#PRQ8L8G99</span>
-            </div>
-            <i class="fas fa-copy btn-arrow" id="copy-icon"></i>
-        </button>
+      <button type="button" class="link-btn" id="copy-btn">
+        <div class="btn-icon"><i class="fas fa-gamepad"></i></div>
+        <div class="btn-content">
+          <span class="btn-label">Player ID</span>
+          <span class="btn-text" id="id-text">#PRQ8L8G99</span>
+        </div>
+        <i class="fas fa-copy btn-arrow" id="copy-icon"></i>
+      </button>
     </nav>
 
     <footer class="footer-text">woxrix.aura</footer>
-</main>
+  </main>
 
-<script>
-const trophyElement = document.getElementById("trophy-counter");
-const copyBtn = document.getElementById("copy-btn");
-const idText = document.getElementById("id-text");
-const copyIcon = document.getElementById("copy-icon");
-const shareBtn = document.getElementById("share-page-btn");
-const playerID = "#PRQ8L8G99";
-const encodedPlayerID = encodeURIComponent(playerID); // "%23PRQ8L8G99"
+  <script>
+    const trophyElement = document.getElementById("trophy-counter");
+    const copyBtn = document.getElementById("copy-btn");
+    const idText = document.getElementById("id-text");
+    const copyIcon = document.getElementById("copy-icon");
+    const shareBtn = document.getElementById("share-page-btn");
 
-// 🔥 LIVE TROPHÄEN LADEN
-async function loadTrophies() {
-    try {
-        const response = await fetch(`http://localhost:3000/api/player/${encodedPlayerID}`);
+    const playerID = "#PRQ8L8G99";
+
+    // Funktion zum Laden der Trophäen von deiner API
+    async function loadTrophies() {
+      try {
+        // Player-ID URL-encodieren, damit # als %23 gesendet wird
+        const encodedPlayerID = encodeURIComponent(playerID);
+
+        // Relative URL, funktioniert lokal und auf Vercel
+        const response = await fetch(`/api/player/${encodedPlayerID}`);
+
         console.log("FETCH STATUS:", response.status);
+
+        if (!response.ok) {
+          throw new Error("API Antwort nicht OK");
+        }
 
         const data = await response.json();
 
         if (!data.trophies || isNaN(data.trophies)) {
-            trophyElement.textContent = "Fehler";
-            return;
+          trophyElement.textContent = "Fehler";
+          return;
         }
 
         animateCounter(Number(data.trophies));
-    } catch (error) {
+      } catch (error) {
         trophyElement.textContent = "API Fehler";
         console.error(error);
+      }
     }
-}
 
-function animateCounter(target) {
-    const duration = 2000;
-    const startTime = performance.now();
+    // Sanfte Animation der Trophäenanzeige
+    function animateCounter(target) {
+      const duration = 2000;
+      const startTime = performance.now();
 
-    function update(currentTime) {
+      function update(currentTime) {
         const progress = Math.min((currentTime - startTime) / duration, 1);
-        const easeOut = t => t * (2 - t);
+        const easeOut = (t) => t * (2 - t);
         const value = Math.floor(easeOut(progress) * target);
         trophyElement.textContent = value.toLocaleString();
 
-        if (progress < 1) requestAnimationFrame(update);
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        }
+      }
+
+      requestAnimationFrame(update);
     }
 
-    requestAnimationFrame(update);
-}
+    // Nach Laden der Seite Trophäen laden
+    window.addEventListener("DOMContentLoaded", loadTrophies);
 
-// Seite geladen → Trophäen laden
-window.addEventListener("DOMContentLoaded", loadTrophies);
+    // Alle 30 Sekunden automatisch aktualisieren
+    setInterval(loadTrophies, 30000);
 
-// 🔄 Automatisch alle 30 Sekunden aktualisieren
-setInterval(loadTrophies, 30000);
-
-// 📋 Copy Player ID
-copyBtn.addEventListener("click", () => {
-    navigator.clipboard.writeText(playerID).then(() => {
+    // Player-ID kopieren beim Klick
+    copyBtn.addEventListener("click", () => {
+      navigator.clipboard.writeText(playerID).then(() => {
         idText.textContent = "Kopiert!";
         copyIcon.className = "fas fa-check";
 
         setTimeout(() => {
-            idText.textContent = playerID;
-            copyIcon.className = "fas fa-copy";
+          idText.textContent = playerID;
+          copyIcon.className = "fas fa-copy";
         }, 2000);
+      });
     });
-});
 
-// 🔗 Share
-shareBtn.addEventListener("click", () => {
-    if (navigator.share) {
-        navigator.share({ title: "Stinge | Aura", url: window.location.href });
-    } else {
+    // Teilen-Funktionalität
+    shareBtn.addEventListener("click", () => {
+      if (navigator.share) {
+        navigator.share({
+          title: "Stinge | Aura",
+          url: window.location.href,
+        });
+      } else {
         navigator.clipboard.writeText(window.location.href);
         alert("Link kopiert!");
-    }
-});
-</script>
-
+      }
+    });
+  </script>
 </body>
 </html>
