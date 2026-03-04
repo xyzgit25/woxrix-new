@@ -26,94 +26,112 @@
         <i class="fas fa-share-nodes"></i>
     </button>
 
-    <main class="container" id="main-card">
-        <div class="profile-section stagger">
-            <div class="avatar-wrapper">
-                <img src="https://i.ibb.co/zCxMt6J/a536a0dbdf6bad6160c800217589cdee-tplv-tiktokx-cropcenter-1080-1080.jpg" alt="Avatar" class="avatar">
-                <div class="status-badge">ONLINE</div>
+    <main class="container" id="tilt-card">
+        <header class="profile">
+            <div class="avatar-wrap">
+                <div class="status-dot" title="Online"></div>
+                <img src="https://i.ibb.co/zCxMt6J/a536a0dbdf6bad6160c800217589cdee-tplv-tiktokx-cropcenter-1080-1080.jpg" alt="Stinge" class="avatar">
             </div>
-            <h1 class="name">STINGE</h1>
-            <p class="bio">Brawl Stars Pro & Content Creator</p>
             
-            <div class="id-container" id="copy-id-btn">
-                <span id="player-id-text">#2Y9Y9Y9Y</span>
-                <i class="fas fa-copy" id="copy-icon"></i>
-            </div>
-        </div>
-
-        <div class="progress-section stagger">
-            <div class="progress-header">
-                <span class="progress-title">Road to 80k</span>
-                <span class="progress-stats">75.400 / 80.000</span>
-            </div>
-            <div class="progress-track">
-                <div class="progress-fill" id="trophy-progress">
-                    <div class="progress-glow"></div>
+            <h1 class="stagger" style="animation-delay: 0.1s;">Stinge</h1>
+            <p class="tag stagger" style="animation-delay: 0.2s;">aka Woxrix</p>
+            
+            <div class="stats-grid stagger" style="animation-delay: 0.3s;">
+                <div class="stat-item">
+                    <i class="fas fa-trophy"></i>
+                    <span class="stat-value" id="trophy-counter" data-target="75000">0</span>
+                    <span class="stat-label">Trophäen</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <i class="fas fa-fire"></i>
+                    <span class="stat-value">Pro</span>
+                    <span class="stat-label">Creator</span>
                 </div>
             </div>
-        </div>
 
-        <div class="links-grid">
-            <a href="#" class="link-btn stagger">
-                <div class="btn-spotlight"></div>
-                <div class="btn-icon"><i class="fab fa-youtube"></i></div>
-                <div class="btn-content">
-                    <span class="btn-label">YouTube</span>
-                    <span class="btn-text">Latest Highlights</span>
-                </div>
-                <i class="fas fa-chevron-right btn-arrow"></i>
-            </a>
+            <p class="bio stagger" style="animation-delay: 0.4s;">
+                Brawl Stars Enthusiast & Content Creator. <br>Täglich neue Clips auf TikTok.
+            </p>
+        </header>
 
-            <a href="#" class="link-btn stagger">
-                <div class="btn-spotlight"></div>
+        <nav class="links">
+            <a href="https://www.tiktok.com/@woxrixbs" target="_blank" rel="noopener" class="link-btn stagger" style="animation-delay: 0.5s;">
                 <div class="btn-icon"><i class="fab fa-tiktok"></i></div>
-                <div class="btn-content">
-                    <span class="btn-label">TikTok</span>
-                    <span class="btn-text">Daily Clips</span>
-                </div>
+                <span class="btn-text">TikTok</span>
                 <i class="fas fa-chevron-right btn-arrow"></i>
-            </a>
-
-            <a href="#" class="link-btn stagger">
                 <div class="btn-spotlight"></div>
-                <div class="btn-icon"><i class="fab fa-discord"></i></div>
-                <div class="btn-content">
-                    <span class="btn-label">Discord</span>
-                    <span class="btn-text">Join the Aura</span>
-                </div>
-                <i class="fas fa-chevron-right btn-arrow"></i>
             </a>
-        </div>
 
-        <footer class="footer stagger">
-            <p>&copy; 2024 STINGE | AURA</p>
+            <button type="button" class="link-btn stagger" id="copy-btn" style="animation-delay: 0.6s;">
+                <div class="btn-icon"><i class="fas fa-gamepad"></i></div>
+                <div class="btn-content">
+                    <span class="btn-label">Player ID</span>
+                    <span class="btn-text" id="id-text">#PRQ8L8G99</span>
+                </div>
+                <i class="fas fa-copy btn-arrow" id="copy-icon"></i>
+                <div class="btn-spotlight"></div>
+            </button>
+        </nav>
+
+        <footer class="stagger footer-text" style="animation-delay: 0.8s;">
+            woxrix.aura
         </footer>
     </main>
 
     <script>
-        const card = document.getElementById('main-card');
-        const copyBtn = document.getElementById('copy-id-btn');
-        const idText = document.getElementById('player-id-text');
+        const card = document.getElementById('tilt-card');
+        const copyBtn = document.getElementById('copy-btn');
+        const idText = document.getElementById('id-text');
         const copyIcon = document.getElementById('copy-icon');
-        const playerID = idText.textContent;
+        const shareBtn = document.getElementById('share-page-btn');
+        const trophyElement = document.getElementById('trophy-counter');
+        const playerID = "#PRQ8L8G99";
 
-        // Progress Bar Animation
-        window.addEventListener('load', () => {
-            const progressFill = document.getElementById('trophy-progress');
-            // Berechne Prozent (75400 / 80000 * 100)
-            const targetPercent = 94.25; 
-            setTimeout(() => {
-                progressFill.style.width = targetPercent + '%';
-            }, 500);
+        // --- Trophäen Counter Animation ---
+        function animateCounter() {
+            const target = parseInt(trophyElement.getAttribute('data-target'));
+            const duration = 2000; // 2 Sekunden
+            const start = 0;
+            const startTime = performance.now();
+
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Easing Funktion für sanftes Bremsen am Ende
+                const easeOutQuad = t => t * (2 - t);
+                const currentNumber = Math.floor(easeOutQuad(progress) * target);
+                
+                trophyElement.textContent = currentNumber.toLocaleString() + "+";
+
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            requestAnimationFrame(update);
+        }
+
+        // Start der Animation nach dem Laden
+        window.addEventListener('DOMContentLoaded', animateCounter);
+
+        // --- Seite teilen ---
+        shareBtn.addEventListener('click', () => {
+            if (navigator.share) {
+                navigator.share({ title: 'Stinge | Aura', url: window.location.href });
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert("Link kopiert!");
+            }
         });
 
-        // --- Tilt Effekt (Desktop) ---
+        // --- 3D Tilt (Desktop) ---
         document.addEventListener('mousemove', (e) => {
             if (window.innerWidth < 768) return;
             const { clientX, clientY } = e;
             const { innerWidth, innerHeight } = window;
-            const x = ((clientX - innerWidth / 2) / innerWidth) * 10;
-            const y = ((clientY - innerHeight / 2) / innerHeight) * -10;
+            const x = ((clientX - innerWidth / 2) / innerWidth) * 15;
+            const y = ((clientY - innerHeight / 2) / innerHeight) * -15;
             card.style.transform = `perspective(1000px) rotateX(${y}deg) rotateY(${x}deg)`;
         });
 
