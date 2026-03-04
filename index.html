@@ -16,6 +16,8 @@
 </head>
 <body>
 
+    <div id="scroll-progress" class="scroll-bar"></div>
+
     <div class="liquid-bg" aria-hidden="true">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
@@ -109,6 +111,14 @@ const modal = document.getElementById("redirect-modal");
 const modalProceed = document.getElementById("modal-proceed");
 const modalCancel = document.getElementById("modal-cancel");
 
+// --- SCROLL PROGRESS LOGIC ---
+window.addEventListener("scroll", () => {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    document.getElementById("scroll-progress").style.width = scrolled + "%";
+});
+
 // --- REDIRECT MODAL LOGIC ---
 document.querySelectorAll('.external-link').forEach(link => {
     link.addEventListener('click', function(e) {
@@ -123,7 +133,7 @@ modalCancel.addEventListener('click', () => modal.classList.remove('show'));
 modalProceed.addEventListener('click', () => modal.classList.remove('show'));
 modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.remove('show'); });
 
-// --- REST DER FUNKTIONEN ---
+// --- API & ANIMATION ---
 async function loadTrophies() {
     try {
         const response = await fetch("/api/player");
@@ -151,6 +161,7 @@ function animateCounter(target) {
 window.addEventListener("DOMContentLoaded", loadTrophies);
 setInterval(loadTrophies, 30000);
 
+// --- COPY & SHARE ---
 copyBtn.addEventListener("click", () => {
     navigator.clipboard.writeText(playerID).then(() => {
         idText.textContent = "Kopiert!";
