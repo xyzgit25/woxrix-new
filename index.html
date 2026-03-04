@@ -83,11 +83,12 @@ const idText = document.getElementById("id-text");
 const copyIcon = document.getElementById("copy-icon");
 const shareBtn = document.getElementById("share-page-btn");
 const playerID = "#PRQ8L8G99";
+const encodedPlayerID = encodeURIComponent(playerID); // "%23PRQ8L8G99"
 
 // 🔥 LIVE TROPHÄEN LADEN
 async function loadTrophies() {
     try {
-        const response = await fetch("http://localhost:3000/api/player/PRQ8L8G99");
+        const response = await fetch(`http://localhost:3000/api/player/${encodedPlayerID}`);
         console.log("FETCH STATUS:", response.status);
 
         const data = await response.json();
