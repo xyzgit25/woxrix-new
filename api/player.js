@@ -7,7 +7,10 @@ export default async function handler(req, res) {
     if (!API_KEY) return res.status(500).json({ error: "API Key fehlt" });
 
     const playerTag = encodeURIComponent("#PRQ8L8G99");
-    const apiResponse = await fetch(`https://api.brawlstars.com/v1/players/${playerTag}`, {
+    // NUTZE DEN ROYALEAPI PROXY UM VERCEL IP BANS ZU UMGEHEN!
+    // Wichtig: Du musst in deinem Brawl Stars Entwickler-Account 
+    // die IP "45.79.218.79" zu deinem API-Key hinzufügen!
+    const apiResponse = await fetch(`https://bsproxy.royaleapi.dev/v1/players/${playerTag}`, {
       headers: { Authorization: `Bearer ${API_KEY}` }
     });
 
