@@ -255,16 +255,13 @@ copyBtn.addEventListener("click", () => {
 });
 
 shareBtn.addEventListener("click", () => {
-    if (navigator.share) {
-        navigator.share({ title: "Stinge | Aura", url: window.location.href }).catch(() => {
-            // Falls Share fehlschlägt, kopiere in Zwischenablage
-            navigator.clipboard.writeText(window.location.href);
-            shareModal.classList.add('show');
-        });
-    } else {
-        navigator.clipboard.writeText(window.location.href);
+    // Immer Link kopieren und Modal zeigen für konsistentes Verhalten
+    navigator.clipboard.writeText(window.location.href).then(() => {
         shareModal.classList.add('show');
-    }
+    }).catch(() => {
+        // Fallback: wenn Clipboard API nicht funktioniert, zeige trotzdem Modal
+        shareModal.classList.add('show');
+    });
 });
 </script>
 
