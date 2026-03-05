@@ -1,7 +1,47 @@
 // api/player.js
 import fetch from "node-fetch";
 
+// Erlaubte Domains für API-Zugriff
+const ALLOWED_ORIGINS = [
+  'https://woxrix.site',
+  'https://www.woxrix.site',
+  'http://localhost:3000',
+  'http://localhost:5500',
+  'http://127.0.0.1:5500'
+];
+
+// Sicherheits-Check: Prüft Origin/Referer
+function isRequestAllowed(req) {
+  const origin = req.headers.origin || req.headers.referer;
+  
+  // Bei lokalem Entwicklung ohne Origin erlauben
+  if (!origin && process.env.NODE_ENV === 'development') {
+    return true;
+  }
+  
+  if (!origin) {
+    return false;
+  }
+  
+  // Prüfe ob Origin in erlaubten Domains
+  return ALLOWED_ORIGINS.some(allowed => origin.startsWith(allowed));
+}
+
 export default async function handler(req, res) {
+  // Sicherheitsprüfung: Nur Anfragen von erlaubten Domains
+  if (!isRequestAllowed(req)) {
+    return res.status(403).json({ 
+      error: 'Forbidden: Access denied. This API can only be accessed from authorized domains.' 
+    });
+  }
+
+  // CORS nur für erlaubte Origins
+  const origin = req.headers.origin;
+  if (origin && ALLOWED_ORIGINS.some(allowed => origin.startsWith(allowed))) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+  }
+
   try {
     const API_KEY = process.env.BRAWLSTARS_API_KEY;
     if (!API_KEY) return res.status(500).json({ error: "API Key fehlt" });
