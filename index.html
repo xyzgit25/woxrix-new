@@ -93,6 +93,16 @@
             </button>
         </nav>
 
+        <div class="visitor-counter">
+            <div class="visitor-icon">
+                <i class="fas fa-eye"></i>
+            </div>
+            <div class="visitor-info">
+                <div class="visitor-count" id="visitor-count">---</div>
+                <div class="visitor-label">Besucher</div>
+            </div>
+        </div>
+
         <footer class="footer-text">
             woxrix.aura
         </footer>
@@ -160,6 +170,55 @@ function animateCounter(target) {
 
 window.addEventListener("DOMContentLoaded", loadTrophies);
 setInterval(loadTrophies, 30000);
+
+// --- VISITOR COUNTER ---
+async function loadVisitorCount() {
+    try {
+        // Generate unique visitor ID
+        let visitorId = localStorage.getItem('visitor-id');
+        if (!visitorId) {
+            visitorId = 'visitor-' + Math.random().toString(36).substr(2, 9) + Date.now();
+            localStorage.setItem('visitor-id', visitorId);
+        }
+
+        const response = await fetch("/api/visitors", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Visitor-Id': visitorId
+            }
+        });
+        
+        if (!response.ok) throw new Error("Visitor API Error");
+        const data = await response.json();
+        
+        if (data.count !== undefined || data.unique !== undefined) {
+            const displayCount = data.unique || data.count;
+            animateVisitorCounter(displayCount);
+        }
+    } catch (error) {
+        console.error('Visitor API Error:', error);
+        document.getElementById('visitor-count').textContent = 'Error';
+    }
+}
+
+function animateVisitorCounter(target) {
+    const counterElement = document.getElementById('visitor-count');
+    const duration = 1500;
+    const startTime = performance.now();
+    
+    function update(currentTime) {
+        const progress = Math.min((currentTime - startTime) / duration, 1);
+        const easeOut = t => t * (2 - t);
+        const value = Math.floor(easeOut(progress) * target);
+        counterElement.textContent = value.toLocaleString();
+        if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+}
+
+// Load visitor count on page load
+window.addEventListener("DOMContentLoaded", loadVisitorCount);
 
 // --- COPY & SHARE ---
 copyBtn.addEventListener("click", () => {
