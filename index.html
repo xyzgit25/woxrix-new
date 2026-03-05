@@ -41,6 +41,17 @@
         </div>
     </div>
 
+    <div id="share-modal" class="modal-overlay">
+        <div class="modal-content modal-success">
+            <div class="modal-icon success-icon"><i class="fas fa-check-circle"></i></div>
+            <h2>Link kopiert!</h2>
+            <p>Der Link zu dieser Seite wurde in deine Zwischenablage kopiert.</p>
+            <div class="modal-actions">
+                <button id="share-modal-close" class="btn-primary">Okay</button>
+            </div>
+        </div>
+    </div>
+
     <button id="share-page-btn" class="share-fab" title="Seite teilen">
         <i class="fas fa-share-nodes"></i>
     </button>
@@ -121,6 +132,10 @@ const modal = document.getElementById("redirect-modal");
 const modalProceed = document.getElementById("modal-proceed");
 const modalCancel = document.getElementById("modal-cancel");
 
+// Share Modal Elemente
+const shareModal = document.getElementById("share-modal");
+const shareModalClose = document.getElementById("share-modal-close");
+
 // --- SCROLL PROGRESS LOGIC ---
 window.addEventListener("scroll", () => {
     const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
@@ -142,6 +157,10 @@ document.querySelectorAll('.external-link').forEach(link => {
 modalCancel.addEventListener('click', () => modal.classList.remove('show'));
 modalProceed.addEventListener('click', () => modal.classList.remove('show'));
 modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.remove('show'); });
+
+// Share Modal Events
+shareModalClose.addEventListener('click', () => shareModal.classList.remove('show'));
+shareModal.addEventListener('click', (e) => { if(e.target === shareModal) shareModal.classList.remove('show'); });
 
 // --- API & ANIMATION ---
 async function loadTrophies() {
@@ -237,10 +256,14 @@ copyBtn.addEventListener("click", () => {
 
 shareBtn.addEventListener("click", () => {
     if (navigator.share) {
-        navigator.share({ title: "Stinge | Aura", url: window.location.href });
+        navigator.share({ title: "Stinge | Aura", url: window.location.href }).catch(() => {
+            // Falls Share fehlschlägt, kopiere in Zwischenablage
+            navigator.clipboard.writeText(window.location.href);
+            shareModal.classList.add('show');
+        });
     } else {
         navigator.clipboard.writeText(window.location.href);
-        alert("Link kopiert!");
+        shareModal.classList.add('show');
     }
 });
 </script>
