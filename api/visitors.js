@@ -1,18 +1,21 @@
 // api/visitors.js
 // Persistent visitor counter using Redis
-import { createClient } from 'redis';
+import Redis from 'ioredis';
 
 let redis = null;
 
 // Initialize Redis client
-async function getRedisClient() {
+function getRedisClient() {
   if (!redis) {
     if (!process.env.REDIS_URL) {
       throw new Error('REDIS_URL environment variable is not set');
     }
-    redis = createClient({ url: process.env.REDIS_URL });
+    redis = new Redis(process.env.REDIS_URL, {
+      maxRetriesPerRequest: 3,
+      enableReadyCheck: false,
+      lazyConnect: false
+    });
     redis.on('error', (err) => console.error('Redis Client Error', err));
-    await redis.connect();
   }
   return redis;
 }
@@ -33,22 +36,22 @@ export default async function handler(req, res) {
       return res.status(200).end();
     }
 
-    const client = await getRedisClient();
+    const client = getRedisClient();
     const visitorId = req.headers['x-visitor-id'] || req.headers['x-forwarded-for'] || 'anonymous';
 
     if (req.method === 'POST') {
       // Check if visitor has been counted before
-      const hasVisited = await client.sIsMember('visitors', visitorId);
+      const hasVisited = await client.sismember('visitors', visitorId);
       
       if (!hasVisited) {
         // Add visitor to set and increment counter
-        await client.sAdd('visitors', visitorId);
+        await client.sadd('visitors', visitorId);
         await client.incr('visitor_count');
       }
 
       // Get current counts
       const count = await client.get('visitor_count') || 0;
-      const unique = await client.sCard('visitors') || 0;
+      const unique = await client.scard('visitors') || 0;
 
       return res.status(200).json({ 
         count: Number(count),
@@ -59,7 +62,7 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
       // Return current counts
       const count = await client.get('visitor_count') || 0;
-      const unique = await client.sCard('visitors') || 0;
+      const unique = await client.scard('visitors') || 0;
 
       return res.status(200).json({ 
         count: Number(count),
